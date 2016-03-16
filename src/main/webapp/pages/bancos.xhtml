@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <h1>Bancos</h1>
+        <h:form id="form" style="width:600px;">
+            <p:panelGrid id="forma" columns="2" layout="grid">         
+                <p:outputLabel value="Nombre del banco"/>
+                <p:inputText value="#{bancosController.banco.sbanco}" required="true" maxlength="250"/>
+                <p:outputLabel value=""/>
+                <h:panelGroup>
+                    <p:commandButton rendered="#{!bancosController.beditar}" value="Guardar" actionListener="#{bancosController.guardar}" update="form"/>
+                    <p:commandButton rendered="#{bancosController.beditar}" value="Actualizar" actionListener="#{bancosController.actualizar}" update="form"/>
+                    <p:commandButton value="Cancelar" actionListener="#{bancosController.cancelar}" update="form:forma"/>
+                </h:panelGroup>
+            </p:panelGrid>
+
+            <p:panelGrid style="margin-top: 10px;" columns="2" layout="grid">       
+                <p:outputLabel value="Banco"/>
+                <p:inputText value="#{bancosController.banco.sbancobus}"/>
+                <p:outputLabel value=""/>
+                <p:commandButton value="Buscar" actionListener="#{bancosController.buscar()}" update="listado"/>
+            </p:panelGrid>
+            <p:dataTable id="listado" style="margin-top: 10px;" var="item" value="#{bancosController.bancos}">
+                <p:column headerText="Banco">
+                    <h:outputText value="#{item.sbanco}" />
+                </p:column>
+                <p:column>
+                    <p:commandLink actionListener="#{bancosController.editar(item.idBanco)}" update="form:forma">
+                        <h:outputText value="Editar" />
+                    </p:commandLink>
+                </p:column>
+                <p:column>
+                    <p:commandLink actionListener="#{bancosController.borrar(item.idBanco)}" update="listado">
+                        <h:outputText value="Borrar" />
+                        <p:confirm header="Confirmación" message="¿En realidad deseas borrar el banco?" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+            </p:confirmDialog>
+        </h:form>  
+    </h:body>
+</html>
